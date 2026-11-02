@@ -5,5 +5,5 @@ description = "Mostra XYZ, uma seta apontando para o norte e a direção (N, NE,
 authors = []
 api = "0.1"
 side = "client"
-capabilities = ["game-read", "render"]
-experimental = ["render"]
+capabilities = ["game-read", "render", "storage", "ui"]
+experimental = ["render", "ui"]
