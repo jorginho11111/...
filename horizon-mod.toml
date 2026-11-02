@@ -1,0 +1,11 @@
+id = "coords_hud"
+name = "Coords HUD"
+version = "0.1.0"
+description = "Mostra XYZ, uma seta apontando para o norte e a direção (N, NE, E...) acima da barra de vida, com a fonte do Minecraft."
+authors = []
+api = "0.1"
+side = "client"
+# game-read: sua posição e para onde você olha;
+# render: desenha o HUD na tela.
+capabilities = ["game-read", "render"]
+experimental = ["render"]
