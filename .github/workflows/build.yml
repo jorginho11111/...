@@ -24,7 +24,17 @@ jobs:
         run: cargo install cargo-horizon-mod --git https://github.com/horizon-rust/horizon --rev e7614d2197ebe9ffdaa75e1bbb432dc0ce855e70 --locked
 
       - name: Build and componentize the mod
-        run: cargo horizon-mod build
+        shell: bash
+        run: |
+          set +e
+          cargo horizon-mod build 2>&1 | tee build.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            grep -E 'error(\[[^]]+\])?:|^error:|Caused by:' build.log | tail -20 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            exit "$status"
+          fi
 
       - name: Make installable zip
         shell: bash
