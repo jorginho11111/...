@@ -8,11 +8,11 @@ use horizon_mod_sdk::{
 };
 
 const CORES: [(u32, u32, &str); 5] = [
-    (0xFFFF_AA00, 0xFFFF_FFFF, "Laranja e branco"),
-    (0xFF55_FFFF, 0xFFFF_FFFF, "Ciano e branco"),
-    (0xFF55_FF55, 0xFFFF_FFFF, "Verde e branco"),
-    (0xFFFF_55FF, 0xFFFF_FFFF, "Rosa e branco"),
-    (0xFFFF_FFFF, 0xFFFF_FFFF, "Branco"),
+    (0xFFFF_AA00, 0xFFFF_FFFF, "Orange and white"),
+    (0xFF55_FFFF, 0xFFFF_FFFF, "Cyan and white"),
+    (0xFF55_FF55, 0xFFFF_FFFF, "Green and white"),
+    (0xFFFF_55FF, 0xFFFF_FFFF, "Pink and white"),
+    (0xFFFF_FFFF, 0xFFFF_FFFF, "White"),
 ];
 const ESCALAS: [f32; 4] = [1.0, 1.25, 1.5, 1.75];
 const PASSO: f32 = 8.0;
@@ -82,30 +82,30 @@ impl CoordsHud {
     fn settings(&self) {
         let button = |id, label: String| Widget::Button(ButtonWidget { id, label });
         if !self.editando {
-            ui::set_settings(&[button(EDITAR, "Editar HUD".to_owned())]);
+            ui::set_settings(&[button(EDITAR, "Edit HUD".to_owned())]);
             return;
         }
         ui::set_settings(&[
             Widget::Text(TextWidget {
                 id: 100,
-                text: "Mover o HUD em passos de 8 px".to_owned(),
+                text: "Move the HUD in 8 px steps".to_owned(),
                 color: 0,
             }),
             Widget::Text(TextWidget {
                 id: 101,
-                text: "O tamanho ajusta o layout e a seta; a fonte do jogo tem tamanho fixo.".to_owned(),
+                text: "Size adjusts the layout and arrow; the game font has a fixed size.".to_owned(),
                 color: 0,
             }),
-            button(ESQUERDA, "Mover para a esquerda".to_owned()),
-            button(DIREITA, "Mover para a direita".to_owned()),
-            button(CIMA, "Mover para cima".to_owned()),
-            button(BAIXO, "Mover para baixo".to_owned()),
+            button(ESQUERDA, "Move left".to_owned()),
+            button(DIREITA, "Move right".to_owned()),
+            button(CIMA, "Move up".to_owned()),
+            button(BAIXO, "Move down".to_owned()),
             button(
                 TAMANHO,
-                format!("Tamanho/layout: {}%", (ESCALAS[self.escala] * 100.0) as u32),
+                format!("Size/layout: {}%", (ESCALAS[self.escala] * 100.0) as u32),
             ),
-            button(COR, format!("Cor: {}", CORES[self.cor].2)),
-            button(CONCLUIR, "Concluir edição".to_owned()),
+            button(COR, format!("Color: {}", CORES[self.cor].2)),
+            button(CONCLUIR, "Done editing".to_owned()),
         ]);
     }
 
