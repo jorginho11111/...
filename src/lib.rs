@@ -131,7 +131,7 @@ impl CoordsHud {
         );
         let dir = direcao(p.yaw);
         let escala = ESCALAS[self.escala];
-        let (cor_rotulo, cor_texto, cor_seta) = CORES[self.cor];
+        let (cor_rotulo, cor_texto, _) = CORES[self.cor];
 
         let total = (largura(rotulo) + 4.0 + largura(&coords) + 7.0 + 8.0 + 7.0 + largura(dir)) * escala;
         let mut x = ((w - total) / 2.0 + self.offset_x).clamp(0.0, (w - total).max(0.0));
@@ -142,7 +142,7 @@ impl CoordsHud {
         x += (largura(rotulo) + 4.0) * escala;
         formas.push(texto(&coords, x, y, cor_texto));
         x += (largura(&coords) + 7.0) * escala;
-        formas.push(seta(x + 4.0 * escala, y + 4.0 * escala, p.yaw, escala, cor_seta));
+        formas.push(seta(x + 4.0 * escala, y + 4.0 * escala, p.yaw, escala, cor_texto));
         x += 15.0 * escala;
         formas.push(texto(dir, x, y, cor_texto));
         render::set_hud(&formas);
