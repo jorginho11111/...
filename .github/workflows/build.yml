@@ -30,7 +30,7 @@ jobs:
           cargo build --lib --release --target wasm32-unknown-unknown 2>&1 | tee guest-build.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
-            grep -E 'error|failed|cannot|not found|mismatched|trait bound' guest-build.log | tail -30 | while IFS= read -r line; do
+            grep -E 'error|failed|cannot|not found|mismatched|trait bound|expected|found|src/lib.rs| --> |help:' guest-build.log | tail -30 | while IFS= read -r line; do
               echo "::error::$line"
             done
             exit "$status"
