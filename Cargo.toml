@@ -7,8 +7,9 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-# Use o mesmo SDK (versão ou caminho) com que o compass_bar foi compilado.
-horizon-mod-sdk = "0.1"
+# SDK oficial do Horizon, fixado na revisão imediatamente anterior à remoção
+# do runtime WebAssembly. Não foi publicado no crates.io.
+horizon-mod-sdk = { git = "https://github.com/horizon-rust/horizon", rev = "e7614d2197ebe9ffdaa75e1bbb432dc0ce855e70" }
 
 [profile.release]
 opt-level = "s"

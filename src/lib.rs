@@ -1,13 +1,10 @@
 // Coords HUD: XYZ + seta do norte + direção, acima da barra de vida.
 // O texto usa o text-shape do jogo, então já sai na fonte do Minecraft.
-//
-// ATENÇÃO: não foi compilado. Os nomes do SDK abaixo foram deduzidos do
-// mod.wasm do compass_bar; se o compilador reclamar, o ajuste é aqui nos
-// `use` e em `impl Guest`, e a lógica de baixo continua valendo.
 
-use horizon_mod_sdk::exports::horizon::mods::events::{Guest, Registration};
-use horizon_mod_sdk::horizon::mods::render::{self, Point, QuadShape, Shape, TextShape};
-use horizon_mod_sdk::horizon::mods::game;
+use horizon_mod_sdk::{
+    game, render, Registration,
+    render::{Point, QuadShape, Shape, TextShape},
+};
 
 const LARANJA: u32 = 0xFFFF_AA00;
 const BRANCO: u32 = 0xFFFF_FFFF;
@@ -52,19 +49,19 @@ fn seta(cx: f32, cy: f32, yaw: f32) -> Shape {
         y: cy + px * s + py * c,
     };
     Shape::Quad(QuadShape {
-        corners: vec![girar(0.0, -4.0), girar(3.0, 3.0), girar(0.0, 1.0), girar(-3.0, 3.0)],
+        corners: (girar(0.0, -4.0), girar(3.0, 3.0), girar(0.0, 1.0), girar(-3.0, 3.0)),
         color: BRANCO,
     })
 }
 
 struct Mod;
 
-impl Guest for Mod {
-    fn init() -> Registration {
-        Registration { commands: vec![], tick: false, frame: true, chat: false }
+impl horizon_mod_sdk::Mod for Mod {
+    fn init() -> Result<(Self, Registration), String> {
+        Ok((Self, Registration::new().on_frame()))
     }
 
-    fn frame(_segundos: f32) {
+    fn frame(&mut self, _segundos: f32) {
         let Some(p) = game::get_player() else {
             render::set_hud(&[]);
             return;
@@ -96,10 +93,6 @@ impl Guest for Mod {
 
         render::set_hud(&formas);
     }
-
-    fn tick(_t: u64) {}
-    fn command(_nome: String, _args: Vec<String>) {}
-    fn chat(_texto: String) {}
 }
 
-horizon_mod_sdk::export!(Mod);
+horizon_mod_sdk::export_mod!(Mod);

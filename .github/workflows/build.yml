@@ -1,0 +1,57 @@
+name: Build Coords HUD
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout mod
+        uses: actions/checkout@v4
+
+      - name: Install Rust and WebAssembly target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Install the Horizon mod builder
+        run: cargo install cargo-horizon-mod --git https://github.com/horizon-rust/horizon --rev e7614d2197ebe9ffdaa75e1bbb432dc0ce855e70 --locked
+
+      - name: Build and componentize the mod
+        run: cargo horizon-mod build
+
+      - name: Make installable zip
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+
+          package = Path('target/horizon-mod/coords_hud.hmod')
+          output = Path('target/coords_hud.zip')
+          if not package.is_file():
+              raise SystemExit(f'Expected build output not found: {package}')
+          with ZipFile(package) as built, ZipFile(output, 'w', ZIP_DEFLATED) as final:
+              names = set(built.namelist())
+              for name in ('horizon-mod.toml', 'mod.wasm'):
+                  if name not in names:
+                      raise SystemExit(f'{package} is missing {name}; found: {sorted(names)}')
+                  final.writestr(name, built.read(name))
+          with ZipFile(output) as final:
+              assert set(final.namelist()) == {'horizon-mod.toml', 'mod.wasm'}
+          print(f'Created {output} with horizon-mod.toml and mod.wasm at archive root')
+          PY
+
+      - name: Upload installable zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: coords-hud
+          path: target/coords_hud.zip
+          if-no-files-found: error
+          retention-days: 90

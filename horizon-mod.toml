@@ -5,7 +5,5 @@ description = "Mostra XYZ, uma seta apontando para o norte e a direção (N, NE,
 authors = []
 api = "0.1"
 side = "client"
-# game-read: sua posição e para onde você olha;
-# render: desenha o HUD na tela.
 capabilities = ["game-read", "render"]
 experimental = ["render"]
