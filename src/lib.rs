@@ -66,8 +66,6 @@ impl horizon_mod_sdk::Mod for Mod {
             render::set_hud(&[]);
             return;
         };
-        let (w, h) = render::gui_size();
-
         let rotulo = "XYZ:";
         let coords = format!(
             "{} {} {}",
@@ -77,10 +75,11 @@ impl horizon_mod_sdk::Mod for Mod {
         );
         let dir = direcao(p.yaw);
 
-        // rótulo, espaço, coords, vão, seta (8 px), vão, direção
-        let total = largura(rotulo) + 4.0 + largura(&coords) + 7.0 + 8.0 + 7.0 + largura(dir);
-        let mut x = ((w - total) / 2.0).round();
-        let y = h - 59.0; // logo acima da barra de vida
+        // rótulo, espaço, coords, vão, seta (8 px), vão, direção.
+        // No canto superior esquerdo, longe da dica de bloco sob a mira
+        // e sem cobrir a barra de vida.
+        let mut x = 8.0;
+        let y = 32.0;
 
         let mut formas = Vec::with_capacity(4);
         formas.push(texto(rotulo, x, y, LARANJA));
