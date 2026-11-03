@@ -1,0 +1,16 @@
+[package]
+name = "coords_hud"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Use o mesmo SDK (versão ou caminho) com que o compass_bar foi compilado.
+horizon-mod-sdk = "0.1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true
