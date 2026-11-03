@@ -178,7 +178,7 @@ impl CoordsHud {
             0.0
         };
         let day_width = day.as_deref().map_or(0.0, largura);
-        let visible_groups = (if self.show_coordinates { 1 } else { 0 })
+        let visible_groups: usize = (if self.show_coordinates { 1 } else { 0 })
             + (if self.show_direction { 1 } else { 0 })
             + (if day.is_some() { 1 } else { 0 });
         let total = (coordinate_width
